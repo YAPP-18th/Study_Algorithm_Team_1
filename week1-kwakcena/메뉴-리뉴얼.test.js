@@ -30,6 +30,14 @@ const countOrders = (orders) => {
   );
 };
 
+const maxValue = (orders) => {
+  const values = Object.values(orders);
+  const keys = Object.keys(orders);
+  const max = Math.max(...values);
+  if (max < 2) return null;
+  return keys.filter((_, i) => values[i] === max);
+};
+
 test('solution', () => {
   expect(solution(1)).toBe(1);
 });
@@ -91,4 +99,30 @@ test('n개의 조합 결과를 카운팅 하기 위해 key-value의 객체로 �
     EH: 1,
     FG: 2,
   });
+});
+
+test('카운팅 한 값 중 제일 큰 value를 구하고 해당 value와 같은 key값 list를 구한다', () => {
+  const orders = {
+    AB: 1,
+    AC: 4,
+    AD: 2,
+    AE: 2,
+    AF: 1,
+    AG: 1,
+    AH: 1,
+    BC: 2,
+    BF: 2,
+    BG: 2,
+    CD: 3,
+    CE: 3,
+    CF: 2,
+    CG: 2,
+    CH: 1,
+    DE: 3,
+    DH: 1,
+    EH: 1,
+    FG: 2,
+  };
+
+  expect(maxValue(orders)).toEqual(['AC']);
 });
