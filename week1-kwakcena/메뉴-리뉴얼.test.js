@@ -1,7 +1,17 @@
-const { isMainThread } = require('worker_threads');
-
-const solution = (n) => {
-  return 1;
+const solution = (orders, courses) => {
+  return courses
+    .map((course) => {
+      return maxValue(
+        countOrders(
+          sortOrder(orders)
+            .map((order) => combination(order, course))
+            .flat()
+        )
+      );
+    })
+    .flat()
+    .sort()
+    .filter((it) => it);
 };
 
 const sortOrder = (order) => order.map((it) => it.split('').sort().join(''));
@@ -41,7 +51,13 @@ const maxValue = (orders) => {
 };
 
 test('solution', () => {
-  expect(solution(1)).toBe(1);
+  expect(
+    solution(['ABCFG', 'AC', 'CDE', 'ACDE', 'BCFG', 'ACDEH'], [2, 3, 4])
+  ).toEqual(['AC', 'ACDE', 'BCFG', 'CDE']);
+  expect(
+    solution(['ABCDE', 'AB', 'CD', 'ADE', 'XYZ', 'XYZ', 'ACD'], [2, 3, 5])
+  ).toEqual(['ACD', 'AD', 'ADE', 'CD', 'XYZ']);
+  expect(solution(['XYZ', 'XWY', 'WXA'], [2, 3, 4])).toEqual(['WX', 'XY']);
 });
 
 test('order의 순서를 먼저 정렬한다', () => {
@@ -81,9 +97,7 @@ test('각 손님별로 나올 수 있는 n개의 조합을 구한다', () => {
 
 test('n개의 조합 결과를 카운팅 하기 위해 key-value의 객체로 만든다', () => {
   const orders = ['ABCFG', 'AC', 'CDE', 'ACDE', 'BCFG', 'ACDEH'];
-  const result = orders
-    .map((order) => combination(order, 2))
-    .reduce((acc, it) => [...acc, ...it], []);
+  const result = orders.map((order) => combination(order, 2)).flat();
   expect(countOrders(result)).toEqual({
     AB: 1,
     AC: 4,
