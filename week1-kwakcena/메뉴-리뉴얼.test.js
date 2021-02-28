@@ -1,8 +1,10 @@
-const { test, expect } = require('@jest/globals');
+const { isMainThread } = require('worker_threads');
 
 const solution = (n) => {
   return 1;
 };
+
+const sortOrder = (order) => order.map((it) => it.split('').sort().join(''));
 
 const combination = (order, n) => {
   const result = [];
@@ -40,6 +42,10 @@ const maxValue = (orders) => {
 
 test('solution', () => {
   expect(solution(1)).toBe(1);
+});
+
+test('order의 순서를 먼저 정렬한다', () => {
+  expect(sortOrder(['XYZ', 'XWY', 'WXA'])).toEqual(['XYZ', 'WXY', 'AWX']);
 });
 
 test('각 손님별로 나올 수 있는 n개의 조합을 구한다', () => {
