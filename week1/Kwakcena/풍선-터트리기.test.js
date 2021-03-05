@@ -15,7 +15,14 @@ const solution = (a) => {
   ).length;
 };
 
-const isExistMinValue = (value, array) => value > Math.min(...array);
+const isExistMinValue = (value, array) => {
+  for (let i = 0; i < array.length; i++) {
+    if (array[i] < value) {
+      return true;
+    }
+  }
+  return false;
+};
 
 test('solution', () => {
   expect(solution([-16, 27, 65, -2, 58, -92, -71, -68, -61, -33])).toBe(6);
