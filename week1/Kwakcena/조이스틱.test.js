@@ -1,14 +1,24 @@
 const solution = (name) => {
+  // name 문자열을 배열로 바꿉니다.
   const array = name.split('');
+  // 거리와 현재 위치를 지정할 값입니다.
   let dist = 0;
   let index = 0;
+
   while (1) {
+    // distance는 해당 단어가 A까지 가려면 얼마나 조이스틱을 움직여야 하는지 반환합니다.
     dist += distance(array[index]);
+    // 해당 단어를 A로 바꿉니다.
     array[index] = 'A';
+    // 다음 위치에 대한 정보가 담겨있습니다. 왼쪽과 오른쪽 중 A가 아닌 알파벳이 먼저 나오는
+    // 방향으로 진행하여 그 위치에 대한 정보와 거리값이 담겨있습니다.
     const nextObj = next(array, index);
+
+    // 만약 배열의 모든 값이 A라면 반복문을 끝냅니다.
     if (array.join('') === 'A'.repeat(name.length)) {
       break;
     }
+    // 거리와 다음 위치의 index로 갱신해줍니다.
     dist += nextObj.dist;
     index = nextObj.index;
   }
