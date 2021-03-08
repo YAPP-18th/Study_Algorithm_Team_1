@@ -9,14 +9,15 @@ function solution(orders, course) {
         course[j]
       );
 
-      combinationResult.forEach((each) => {
-        let joinEach = each.join('');
-        if (dict[joinEach]) {
-          dict[joinEach]++;
-        } else {
-          dict[joinEach] = 1;
-        }
-      });
+      if (combinationResult.length > 0) {
+        dict = combinationResult.reduce(
+          (acc, it) => ({
+            ...acc,
+            [it.join('')]: (acc[it.join('')] || 0) + 1,
+          }),
+          dict
+        );
+      }
     }
   }
 
@@ -44,13 +45,13 @@ function solution(orders, course) {
 // 해당 조합 코드는 직접 구현하지 않았습니다.
 // 출처: https://velog.io/@gytlr01/조합-순열-부분집합-알고리즘-자바스크립트
 function combination(arr, num) {
-  let result = [];
+  const result = [];
   if (num == 1) return arr.map((e) => [e]);
 
   arr.forEach((e, i, array) => {
-    let rest = array.slice(i + 1);
-    let combinations = combination(rest, num - 1);
-    let combiArr = combinations.map((x) => [e, ...x]);
+    const rest = array.slice(i + 1);
+    const combinations = combination(rest, num - 1);
+    const combiArr = combinations.map((x) => [e, ...x]);
     result.push(...combiArr);
   });
   return result;
