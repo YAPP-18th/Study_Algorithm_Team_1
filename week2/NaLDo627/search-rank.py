@@ -72,7 +72,6 @@ def lower_bound(db_list, score):
     if end < 0:
         return len(db_list)
     return 0
-print(lower_bound([9, 11, 11, 11, 100, 100, 200, 300], 100))
 
 # bisect 모듈 사용
 def bisect_lower_bound(db_list, score):
