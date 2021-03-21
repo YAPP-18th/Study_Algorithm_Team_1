@@ -31,6 +31,7 @@ const combination = (operators) => {
 };
 
 const toArray = (expression) => {
+  // 참고: https://stackoverflow.com/questions/30279778/javascript-regex-spaces-between-characters
   return expression
     .replace(/(\*|\-|\+)(?!$)/g, ' $1 ')
     .split(' ')
@@ -46,7 +47,9 @@ const calculate = (operators, expression) => {
 
   for (let i = 0; i < operators.length; i++) {
     const oper = operators[i];
+    // 해당 연산자가 포함되어 있으면 반복
     while (expression.includes(oper)) {
+      // 연산자가 처음으로 나오는 위치를 찾음.
       const index = expression.findIndex((it) => it === oper);
       const number = cal[oper](expression[index - 1], expression[index + 1]);
       expression.splice(index - 1, 3, number);
@@ -63,6 +66,17 @@ test('연산자를 뽑아낸다.', () => {
   expect(getOperator('100-200*300-500+20')).toEqual(['-', '*', '+']);
 });
 
+test('뽑아낸 연산자로 우선순위에 따른 조합을 구한다', () => {
+  expect(combination(['-', '*', '+'])).toEqual([
+    ['-', '*', '+'],
+    ['-', '+', '*'],
+    ['*', '-', '+'],
+    ['*', '+', '-'],
+    ['+', '-', '*'],
+    ['+', '*', '-'],
+  ]);
+});
+
 test('수식을 배열의 원소로 뽑아낸다', () => {
   expect(toArray('100-200*300-500+20')).toEqual([
     100,
@@ -74,17 +88,6 @@ test('수식을 배열의 원소로 뽑아낸다', () => {
     500,
     '+',
     20,
-  ]);
-});
-
-test('뽑아낸 연산자로 우선순위에 따른 조합을 구한다', () => {
-  expect(combination(['-', '*', '+'])).toEqual([
-    ['-', '*', '+'],
-    ['-', '+', '*'],
-    ['*', '-', '+'],
-    ['*', '+', '-'],
-    ['+', '-', '*'],
-    ['+', '*', '-'],
   ]);
 });
 
