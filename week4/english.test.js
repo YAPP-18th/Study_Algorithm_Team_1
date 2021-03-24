@@ -1,21 +1,25 @@
 const solution = (n, words) => {
-  const answers = new Set([words[0]]);
-  for (let i = 1; i < words.length; i++) {
-    const player = (i % n) + 1;
-    const turn = parseInt(i / n) + 1;
-    if (answers.has(words[i]) || !isPossible(words[i - 1], words[i])) {
-      return [player, turn];
-    }
-    answers.add(words[i - 1]);
-  }
-  return [0, 0];
-};
+  // 사용했던 단어인지 확인하기 위한 객체.
+  const used = {};
+  // 첫 단어를 객체에 넣어 놓고 시작.
+  used[words[0]] = 1;
 
-const isPossible = (first, second) => {
-  if (second === undefined) {
-    return true;
+  for (let i = 1; i < words.length; i++) {
+    // 이전 단어와 현재 단어.
+    const [previous, current] = [words[i - 1], words[i]];
+    // 현재 단어가 객체에 존재하면 +1, 아니면 value가 0인 값으로 설정.
+    used[current] = (used[current] || 0) + 1;
+
+    // 만약 이전 단어의 마지막 글자와 현재 단어의 첫 글자가 다르거나,
+    // 사용했던 단어라면 해당 key 값의 value는 1을 넘어서므로 그때의 답을 return.
+    if (previous.slice(-1) !== current[0] || used[current] > 1) {
+      // (i % n) + 1 은 현재 player, (i / n) + 1은 현재 차례.
+      // javascript에서 나누기는 소수점을 포함하기 떄문에 parseInt를 한다.
+      return [(i % n) + 1, parseInt(i / n) + 1];
+    }
   }
-  return first.slice(-1) === second[0];
+  // 끝말잇기가 모두 잘 되면 [0, 0] 반환.
+  return [0, 0];
 };
 
 test('solution', () => {
@@ -55,14 +59,3 @@ test('solution', () => {
     solution(2, ['hello', 'one', 'even', 'never', 'now', 'world', 'draw'])
   ).toEqual([1, 3]);
 });
-
-test('두 단어가 끝말잇기 구조인가?', () => {
-  expect(isPossible('tank', 'kick')).toBe(true);
-  expect(isPossible('kick', 'know')).toBe(true);
-  expect(isPossible('know', 'tank')).toBe(false);
-});
-
-// n	words	result
-// 3	["tank", "kick", "know", "wheel", "land", "dream", "mother", "robot", "tank"]	[3,3]
-// 5	["hello", "observe", "effect", "take", "either", "recognize", "encourage", "ensure", "establish", "hang", "gather", "refer", "reference", "estimate", "executive"]	[0,0]
-// 2	["hello", "one", "even", "never", "now", "world", "draw"]	[1,3]
