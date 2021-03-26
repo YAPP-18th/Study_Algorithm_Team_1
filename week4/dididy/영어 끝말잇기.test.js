@@ -56,30 +56,12 @@ const solution = (n, words) => {
   return getFail(seperateWord(n, words));
 };
 
-test('Test compareChain', () => {
+test('Test compareChain function', () => {
   expect(compareChain('tank', 'kind')).toEqual(true);
   expect(compareChain('tank', 'ex')).toEqual(false);
 });
 
-test('Test getFail', () => {
-  expect(
-    getFail(
-      seperateWord(3, [
-        'tank',
-        'kick',
-        'know',
-        'wheel',
-        'land',
-        'dream',
-        'mother',
-        'robot',
-        'tank',
-      ])
-    )
-  ).toEqual([3, 3]);
-});
-
-test('Test getFail', () => {
+test('Test getFail function', () => {
   expect(
     getFail([
       ['tank', 'wheel', 'mother'],
@@ -89,7 +71,7 @@ test('Test getFail', () => {
   ).toEqual([3, 3]);
 });
 
-test('Test seperateWord', () => {
+test('Test seperateWord function', () => {
   expect(
     seperateWord(3, [
       'tank',
